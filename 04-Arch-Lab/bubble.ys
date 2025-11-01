@@ -1,0 +1,75 @@
+	.pos 0
+	irmovq	stack, %rsp
+	call main
+	halt
+
+	.align 8
+array:
+	.quad 0xbca
+	.quad 0xcba
+	.quad 0xacb
+	.quad 0xcab
+	.quad 0xabc
+	.quad 0xbac
+	
+################################################################################
+# You may want to modify this portion
+
+# %rdi data
+# %rsi count
+# %rbx i
+# %rcx last
+# %rdx tmp
+# %r9 1
+# %r10 8
+bubble_sort:
+	irmovq $1, %r9
+	irmovq $8, %r10
+    rrmovq %rdi, %rcx
+	rrmovq %rsi, %rdx
+    subq %r9, %rdx
+Loop_1:
+	andq %rdx, %rdx
+	je Loop_2
+    addq %r10, %rcx
+    subq %r9, %rdx
+	jmp Loop_1
+Loop_2:
+	rrmovq %rcx, %rdx
+	subq %rdi, %rdx
+	jle Done_2
+
+    rrmovq %rdi, %rbx
+Loop_3:
+	rrmovq %rcx, %rdx
+	subq %rbx, %rdx
+	jle Done_3
+
+    mrmovq (%rbx), %r11
+    mrmovq 8(%rbx), %r12
+
+    subq %r12, %r11
+    jle Else
+
+	mrmovq (%rbx), %r11
+    mrmovq 8(%rbx), %r12
+    rmmovq %r11, 8(%rbx)
+    rmmovq %r12, (%rbx)
+
+Else:
+	addq %r10, %rbx
+	jmp Loop_3
+Done_3:
+    subq %r10, %rcx
+	jmp Loop_2
+Done_2:
+    ret
+
+main:
+	irmovq array, %rdi
+	irmovq $6, %rsi
+	call bubble_sort
+	ret
+
+	.pos 0x200
+stack:
