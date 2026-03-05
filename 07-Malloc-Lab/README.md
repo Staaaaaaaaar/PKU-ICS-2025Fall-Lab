@@ -9,7 +9,6 @@
 - `void *calloc(size_t nmemb, size_t size)`：分配内存块并初始化为零。
 - `void mm_checkheap(int lineno)`：堆一致性检查器。
 
-> [!TIP]
 > 此实验具有广泛的设计空间，并且错误在分配器中尤其棘手且难以追踪，因此在设计和调试上花费的总时间很可能会超过编码所花的时间。
 
 ## 预备知识
